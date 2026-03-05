@@ -7,8 +7,9 @@ from typing import Dict, List
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+
+# NEW: semantic embedding model
+from sentence_transformers import SentenceTransformer, util
 
 
 BASE_DIR = Path(__file__).resolve().parents[1]
@@ -33,8 +34,8 @@ class EvaluateResponse(BaseModel):
 
 app = FastAPI(
     title="InterviewSense AI API",
-    version="1.0.0",
-    description="Mock interview answer evaluator using TF-IDF + cosine similarity.",
+    version="1.1.0",
+    description="Mock interview evaluator using semantic embeddings.",
 )
 
 app.add_middleware(
@@ -45,6 +46,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+# Load embedding model once when server starts
+model = SentenceTransformer("all-MiniLM-L6-v2")
 
 
 def load_questions() -> List[QuestionItem]:
@@ -68,10 +72,13 @@ def evaluate_answer(payload: EvaluateRequest) -> EvaluateResponse:
         raise HTTPException(status_code=404, detail="Question not found")
 
     reference_answer = QUESTION_MAP[payload.question]
-    vectorizer = TfidfVectorizer(stop_words="english")
-    tfidf_matrix = vectorizer.fit_transform([reference_answer, payload.answer])
 
-    similarity = float(cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:2])[0][0])
+    # NEW: semantic similarity instead of TF-IDF
+    ref_embedding = model.encode(reference_answer, convert_to_tensor=True)
+    user_embedding = model.encode(payload.answer, convert_to_tensor=True)
+
+    similarity = float(util.cos_sim(ref_embedding, user_embedding).item())
+
     score = round(similarity * 100)
 
     if similarity > 0.75:
@@ -79,10 +86,10 @@ def evaluate_answer(payload: EvaluateRequest) -> EvaluateResponse:
         feedback = "Great answer. You captured the core concept clearly."
     elif similarity > 0.45:
         evaluation = "Partially Correct"
-        feedback = "Decent attempt. Include more key terms and precise details."
+        feedback = "Decent attempt. Include more key ideas and deeper explanation."
     else:
         evaluation = "Incorrect"
-        feedback = "Answer misses key points. Review the core concept and try again."
+        feedback = "Answer misses important concepts. Review the topic and try again."
 
     return EvaluateResponse(score=score, evaluation=evaluation, feedback=feedback)
 
