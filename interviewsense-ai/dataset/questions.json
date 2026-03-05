@@ -1,0 +1,42 @@
+[
+  {
+    "question": "What is a REST API?",
+    "reference_answer": "A REST API is an architectural style for building web services where resources are identified by URLs and manipulated using standard HTTP methods like GET, POST, PUT, and DELETE. It is typically stateless and uses representations such as JSON."
+  },
+  {
+    "question": "Explain polymorphism in object-oriented programming.",
+    "reference_answer": "Polymorphism means one interface can represent different underlying forms. In OOP, different classes can implement the same method name in different ways, allowing the same call to produce behavior specific to each object type."
+  },
+  {
+    "question": "What is a database index?",
+    "reference_answer": "A database index is a data structure that improves query performance by allowing the database to find rows quickly without scanning the entire table. It speeds up reads but can add overhead on writes."
+  },
+  {
+    "question": "What is machine learning?",
+    "reference_answer": "Machine learning is a branch of artificial intelligence where algorithms learn patterns from data to make predictions or decisions without being explicitly programmed for every rule."
+  },
+  {
+    "question": "Explain common HTTP methods.",
+    "reference_answer": "Common HTTP methods include GET for retrieving data, POST for creating data, PUT for replacing data, PATCH for partially updating data, and DELETE for removing data."
+  },
+  {
+    "question": "What is a hash table?",
+    "reference_answer": "A hash table is a data structure that stores key-value pairs and uses a hash function to map keys to array indices. It provides average O(1) time for insert, lookup, and delete operations."
+  },
+  {
+    "question": "What is normalization in databases?",
+    "reference_answer": "Normalization is the process of structuring relational database tables to reduce redundancy and improve data integrity, usually by splitting data into related tables and defining clear relationships."
+  },
+  {
+    "question": "What is the difference between SQL and NoSQL databases?",
+    "reference_answer": "SQL databases are relational, use structured schemas, and query language SQL. NoSQL databases are non-relational, often schema-flexible, and optimized for specific data models like document, key-value, or graph."
+  },
+  {
+    "question": "What is overfitting in machine learning?",
+    "reference_answer": "Overfitting happens when a model learns training data too closely, including noise, and performs poorly on unseen data. It has high training accuracy but weak generalization."
+  },
+  {
+    "question": "Explain the concept of encapsulation.",
+    "reference_answer": "Encapsulation is an OOP principle of bundling data and methods within a class and restricting direct access to internal state, typically through public methods, to protect data integrity."
+  }
+]
